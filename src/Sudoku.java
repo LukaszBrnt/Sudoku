@@ -1,10 +1,9 @@
-import java.util.Arrays;
-import java.util.Random;
+import java.util.*;
 
 public class Sudoku {
 
     private int[][] board = new int[9][9];
-    private int firstFillPercentage = 5;
+    private int firstFillPercentage = 25;
 
     public Sudoku() {
     }
@@ -26,23 +25,43 @@ public class Sudoku {
 
     private void randomizeSudoku() {
         int filledFieldsCounter = 81 * firstFillPercentage / 100;
+        if (filledFieldsCounter < 17) {
+            System.out.println("Filled level lower than possible, now it's 17");
+            filledFieldsCounter = 17;
+        }
         System.out.println("Generating level with " + filledFieldsCounter + " fields");
         int counter = 0;
-        int i, j;
+        int column = 0;
+        List<Integer> shuffleArray = getShuffleArray();
         Random findRandom = new Random();
-        do {
-            i = findRandom.nextInt(9);
-            j = findRandom.nextInt(9);
-            board[i][j] = findRandom.nextInt(9) + 1;
+        do{
+            column = findRandom.nextInt(9);
+            board[counter][column] = shuffleArray.get(counter);
             counter++;
-        } while (counter <= filledFieldsCounter);
+        }while (counter<9);
+
+
+//        do {
+//            i = findRandom.nextInt(9);
+//            j = findRandom.nextInt(9);
+//            board[i][j] = findRandom.nextInt(9) + 1;
+//            counter++;
+//        } while (counter <= filledFieldsCounter);
         printSudoku();
+
         if (!check(true)){
             System.out.println("Ou, generated wrongly");
             generateSudoku();
             runner();
         }
 
+    }
+
+    private List<Integer> getShuffleArray() {
+        Integer[] intArray = { 1, 2, 3, 4, 5, 6, 7 , 8 , 9 };
+        List<Integer> shuffleArray = Arrays.asList(intArray);
+        Collections.shuffle(shuffleArray);
+        return shuffleArray;
     }
 
     private boolean validate(int tab[], boolean ignoreZero) {
