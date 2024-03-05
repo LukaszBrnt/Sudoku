@@ -18,7 +18,7 @@ public class Sudoku {
         long start = System.currentTimeMillis();
         generateSudoku();
         randomizeSudoku();
-        printSudoku();
+        //printSudoku();
         long end = System.currentTimeMillis();
         return end - start;
     }
@@ -31,20 +31,28 @@ public class Sudoku {
         }
         System.out.println("Generating level with " + filledFieldsCounter + " fields");
         int counter = 0;
+        int row = 9;
         int column = 0;
         List<Integer> shuffleArray = getShuffleArray();
         Random findRandom = new Random();
         do {
-            column = findRandom.nextInt(9);
-            board[counter][column] = shuffleArray.get(counter);
+            if (row == 9) {
+                row = 0;
+                shuffleArray = getShuffleArray();
+            }
             counter++;
-        } while (counter < 9);
-        printSudoku();
+            column = findRandom.nextInt(9);
+            board[row][column] = shuffleArray.get(row);
+
+            row++;
+        } while (counter < filledFieldsCounter);
 
         if (!check(true)) {
             System.out.println("Ou, generated wrongly");
             generateSudoku();
             runner();
+        } else {
+            printSudoku();
         }
 
     }
@@ -75,7 +83,7 @@ public class Sudoku {
                         existInTable = true;
                     }
                 }
-                existInTable=false;
+                existInTable = false;
             }
         }
         return true;
