@@ -14,7 +14,6 @@ public class Sudoku {
     }
 
     public long runner() {
-        System.out.println("Sudoku start!");
         long start = System.currentTimeMillis();
         generateSudoku();
         randomizeSudoku();
@@ -29,7 +28,6 @@ public class Sudoku {
             System.out.println("Filled level lower than possible, now it's 17");
             filledFieldsCounter = 17;
         }
-        System.out.println("Generating level with " + filledFieldsCounter + " fields");
         int counter = 0;
         int row = 9;
         int column = 0;
@@ -52,6 +50,8 @@ public class Sudoku {
             generateSudoku();
             runner();
         } else {
+            System.out.println("Sudoku start!");
+            System.out.println("Generating level with " + filledFieldsCounter + " fields");
             printSudoku();
         }
 
@@ -77,7 +77,6 @@ public class Sudoku {
                 for (int i = 0; i < 9; i++) {
                     if (n == tab[i] && n != 0) {
                         if (existInTable) {
-                            System.out.println("ERROR");
                             return false;
                         }
                         existInTable = true;
@@ -127,7 +126,6 @@ public class Sudoku {
 
 
     private void generateSudoku() {
-        System.out.println("Set all sudoku to 0");
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
                 board[i][j] = 0;
