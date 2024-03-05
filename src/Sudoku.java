@@ -34,22 +34,14 @@ public class Sudoku {
         int column = 0;
         List<Integer> shuffleArray = getShuffleArray();
         Random findRandom = new Random();
-        do{
+        do {
             column = findRandom.nextInt(9);
             board[counter][column] = shuffleArray.get(counter);
             counter++;
-        }while (counter<9);
-
-
-//        do {
-//            i = findRandom.nextInt(9);
-//            j = findRandom.nextInt(9);
-//            board[i][j] = findRandom.nextInt(9) + 1;
-//            counter++;
-//        } while (counter <= filledFieldsCounter);
+        } while (counter < 9);
         printSudoku();
 
-        if (!check(true)){
+        if (!check(true)) {
             System.out.println("Ou, generated wrongly");
             generateSudoku();
             runner();
@@ -58,7 +50,7 @@ public class Sudoku {
     }
 
     private List<Integer> getShuffleArray() {
-        Integer[] intArray = { 1, 2, 3, 4, 5, 6, 7 , 8 , 9 };
+        Integer[] intArray = {1, 2, 3, 4, 5, 6, 7, 8, 9};
         List<Integer> shuffleArray = Arrays.asList(intArray);
         Collections.shuffle(shuffleArray);
         return shuffleArray;
@@ -75,14 +67,15 @@ public class Sudoku {
                 return false;
             } else {
                 for (int i = 0; i < 9; i++) {
-                    if (n == tab[i] && n!=0) {
+                    if (n == tab[i] && n != 0) {
                         if (existInTable) {
                             System.out.println("ERROR");
                             return false;
                         }
-                        existInTable=true;
+                        existInTable = true;
                     }
                 }
+                existInTable=false;
             }
         }
         return true;
@@ -106,13 +99,16 @@ public class Sudoku {
             if (!validate(tab, ignoreZero)) {
                 return false;
             }
-
-            for (int i = 0; i < 3; i++) {
-                tab[i] = board[checkIteration * 3][checkIteration * 3];
-                tab[i + 3] = board[1 + checkIteration * 3][1 + checkIteration * 3];
-                tab[i + 6] = board[2 + checkIteration * 3][2 + checkIteration * 3];
+            for (int i = 0; i < 9; i += 3) {
+                for (int j = 0; j < 9; j += 3) {
+                    int index = 0;
+                    for (int k = i; k < i + 3; k++) {
+                        for (int l = j; l < j + 3; l++) {
+                            tab[index++] = board[k][l];
+                        }
+                    }
+                }
             }
-            System.out.println(Arrays.toString(tab));
             //check mini-rectangles
             if (!validate(tab, ignoreZero)) {
                 return false;
@@ -120,6 +116,7 @@ public class Sudoku {
         }
         return true;
     }
+
 
     private void generateSudoku() {
         System.out.println("Set all sudoku to 0");
