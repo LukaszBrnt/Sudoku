@@ -3,6 +3,9 @@ import java.util.*;
 public class Sudoku {
 
     private int[][] board = new int[9][9];
+
+
+    private int attemptsCounter;
     private int firstFillPercentage = 25;
 
     public Sudoku() {
@@ -11,6 +14,7 @@ public class Sudoku {
     public Sudoku(int firstFillPercentage) {
         super();
         this.firstFillPercentage = firstFillPercentage;
+        setAttemptsCounter(0);
     }
 
     public long runner() {
@@ -46,15 +50,20 @@ public class Sudoku {
         } while (counter < filledFieldsCounter);
 
         if (!check(true)) {
-            System.out.println("Ou, generated wrongly");
+            incrementAttemptCounter();
             generateSudoku();
             runner();
         } else {
             System.out.println("Sudoku start!");
             System.out.println("Generating level with " + filledFieldsCounter + " fields");
+            System.out.println("Needed only: "+getAttemptsCounter()+" attempts.");
             printSudoku();
         }
+        setAttemptsCounter(0);
+    }
 
+    private void incrementAttemptCounter() {
+        setAttemptsCounter(getAttemptsCounter()+1);
     }
 
     private List<Integer> getShuffleArray() {
@@ -106,19 +115,20 @@ public class Sudoku {
             if (!validate(tab, ignoreZero)) {
                 return false;
             }
-            for (int i = 0; i < 9; i += 3) {
-                for (int j = 0; j < 9; j += 3) {
-                    int index = 0;
-                    for (int k = i; k < i + 3; k++) {
-                        for (int l = j; l < j + 3; l++) {
-                            tab[index++] = board[k][l];
-                        }
+
+        }
+        for (int i = 0; i < 9; i += 3) {
+            for (int j = 0; j < 9; j += 3) {
+                int index = 0;
+                for (int k = i; k < i + 3; k++) {
+                    for (int l = j; l < j + 3; l++) {
+                        tab[index++] = board[k][l];
                     }
                 }
-            }
-            //check mini-rectangles
-            if (!validate(tab, ignoreZero)) {
-                return false;
+                //check mini-rectangles
+                if (!validate(tab, ignoreZero)) {
+                    return false;
+                }
             }
         }
         return true;
@@ -151,5 +161,13 @@ public class Sudoku {
         }
         System.out.println("+ - - - + - - - + - - - +");
         System.out.println("Printed Sudoku");
+    }
+
+    public int getAttemptsCounter() {
+        return attemptsCounter;
+    }
+
+    public void setAttemptsCounter(int attemptsCounter) {
+        this.attemptsCounter = attemptsCounter;
     }
 }
