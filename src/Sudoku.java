@@ -5,7 +5,7 @@ public class Sudoku {
     private int[][] board = new int[9][9];
 
 
-    private int attemptsCounter;
+    private long attemptsCounter;
     private int firstFillPercentage = 25;
 
     public Sudoku() {
@@ -18,47 +18,49 @@ public class Sudoku {
     }
 
     public long runner() {
-        long start = System.currentTimeMillis();
         generateSudoku();
+        long start = System.currentTimeMillis();
         randomizeSudoku();
-        //printSudoku();
         long end = System.currentTimeMillis();
         return end - start;
     }
 
     private void randomizeSudoku() {
+        boolean generatedCorrectly = false;
         int filledFieldsCounter = 81 * firstFillPercentage / 100;
         if (filledFieldsCounter < 17) {
             System.out.println("Filled level lower than possible, now it's 17");
             filledFieldsCounter = 17;
         }
-        int counter = 0;
-        int row = 9;
-        int column = 0;
-        List<Integer> shuffleArray = getShuffleArray();
-        Random findRandom = new Random();
         do {
-            if (row == 9) {
-                row = 0;
-                shuffleArray = getShuffleArray();
+            int counter = 0;
+            int row = 9;
+            int column = 0;
+            List<Integer> shuffleArray = getShuffleArray();
+            Random findRandom = new Random();
+            do {
+                if (row == 9) {
+                    row = 0;
+                    shuffleArray = getShuffleArray();
+                }
+                counter++;
+                column = findRandom.nextInt(9);
+                board[row][column] = shuffleArray.get(row);
+
+                row++;
+            } while (counter < filledFieldsCounter);
+
+            if (!check(true)) {
+                generateSudoku();
+                incrementAttemptCounter();
+            } else {
+                generatedCorrectly = true;
+                System.out.println("Sudoku start!");
+                System.out.println("Generating level with " + filledFieldsCounter + " fields");
+                System.out.println("Needed only: " + getAttemptsCounter() + " attempts.");
+                printSudoku();
             }
-            counter++;
-            column = findRandom.nextInt(9);
-            board[row][column] = shuffleArray.get(row);
-
-            row++;
-        } while (counter < filledFieldsCounter);
-
-        if (!check(true)) {
-            incrementAttemptCounter();
-            generateSudoku();
-            runner();
-        } else {
-            System.out.println("Sudoku start!");
-            System.out.println("Generating level with " + filledFieldsCounter + " fields");
-            System.out.println("Needed only: "+getAttemptsCounter()+" attempts.");
-            printSudoku();
-        }
+        }while (!generatedCorrectly);
         setAttemptsCounter(0);
     }
 
@@ -163,11 +165,11 @@ public class Sudoku {
         System.out.println("Printed Sudoku");
     }
 
-    public int getAttemptsCounter() {
+    public long getAttemptsCounter() {
         return attemptsCounter;
     }
 
-    public void setAttemptsCounter(int attemptsCounter) {
+    public void setAttemptsCounter(long attemptsCounter) {
         this.attemptsCounter = attemptsCounter;
     }
 }
