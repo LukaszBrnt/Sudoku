@@ -5,7 +5,7 @@ import static java.lang.Integer.parseInt;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Sudoku Example");
+        printVersion();
         Scanner scanner = new Scanner(System.in);
         int input=0;
         do {
@@ -19,6 +19,10 @@ public class Main {
         }while (input > 81);
         Sudoku sudoku = new Sudoku(input);
         sudoku.runner();
+    }
+
+    private static void printVersion() {
+        System.out.println("Sudoku - Version 1.0");
     }
 
 
