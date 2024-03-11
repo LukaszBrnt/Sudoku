@@ -19,6 +19,7 @@ public class Main {
         }while (input > 81);
         Sudoku sudoku = new Sudoku(input);
         sudoku.runner();
+        Solver.solveByFindLeastFreeFields(sudoku.getBoard());
     }
 
     private static void printVersion() {

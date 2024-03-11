@@ -172,4 +172,8 @@ public class Sudoku {
     public void setAttemptsCounter(long attemptsCounter) {
         this.attemptsCounter = attemptsCounter;
     }
+
+    public int[][] getBoard() {
+        return board;
+    }
 }
