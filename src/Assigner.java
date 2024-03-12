@@ -32,10 +32,10 @@ public class Assigner {
                 rowsInList.add(tempTab);
             }
         }
-        for (int[] index: rowsInList){
-            System.out.println(Arrays.toString(index));
-        }
     }
 
+    public ArrayList<int[]> getRowsInList() {
+        return rowsInList;
+    }
 }
 

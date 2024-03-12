@@ -100,38 +100,12 @@ public class Sudoku {
     }
 
     private boolean check(boolean ignoreZero) {
-        int[] tab = new int[9];
-        for (int checkIteration = 0; checkIteration < 9; checkIteration++) {
-            for (int i = 0; i < 9; i++) {
-                tab[i] = board[i][checkIteration];
-            }
-            //check rows
-            if (!validate(tab, ignoreZero)) {
-                return false;
-            }
-
-            for (int i = 0; i < 9; i++) {
-                tab[i] = board[checkIteration][i];
-            }
-            //check cols
-            if (!validate(tab, ignoreZero)) {
-                return false;
-            }
-
-        }
-        for (int i = 0; i < 9; i += 3) {
-            for (int j = 0; j < 9; j += 3) {
-                int index = 0;
-                for (int k = i; k < i + 3; k++) {
-                    for (int l = j; l < j + 3; l++) {
-                        tab[index++] = board[k][l];
-                    }
-                }
-                //check mini-rectangles
+        Assigner assigner = new Assigner();
+        assigner.convertToRows(board);
+        for (int[] tab: assigner.getRowsInList()) {
                 if (!validate(tab, ignoreZero)) {
                     return false;
                 }
-            }
         }
         return true;
     }
